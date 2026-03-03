@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # DISEÑO Y APLICACIÓN DE UN MODELO HÍBRIDO DE CICLO DE VIDA DEL SOFTWARE
 ## Plataforma E-Commerce Empresarial para PYME en Crecimiento
 
@@ -323,5 +323,3 @@ El modelo híbrido propuesto permite:
 - Escalar progresivamente.
 - Integrar rigor académico con prácticas empresariales reales.
 =======
-# Ingenier-a-De-Procesos-
->>>>>>> 233ce172e2411f856defcd2c4855aedf728dfae6
