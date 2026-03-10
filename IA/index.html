@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculo Multivariado</title>
+    <link rel="stylesheet" href="style.css">
+    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.js"></script>
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/nerdamer@1.1.13/nerdamer.core.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/nerdamer@1.1.13/Algebra.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/nerdamer@1.1.13/Calculus.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/nerdamer@1.1.13/Solve.js"></script>
+
+    <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script type="text/javascript" id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+    </script>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Calculo Multivariado</h1>
+            <p>Advanced Calculus, Algebra, and Graphing</p>
+        </header>
+
+        <div class="screen-container">
+            <div id="historyDisplay" class="history"></div>
+            <input type="text" id="mathInput" placeholder="e.g., integral(x^2) or derivative(sin(x))" autocomplete="off">
+            <button onclick="calculate()" class="btn-enter">Calculate ↵</button>
+        </div>
+
+        <div class="keyboard-wrapper">
+            <div class="keyboard-tabs">
+                <button class="tab-btn active" onclick="switchTab('basic')">Basic</button>
+                <button class="tab-btn" onclick="switchTab('func')">Functions</button>
+                <button class="tab-btn" onclick="switchTab('calc')">Calculus</button>
+                <button class="tab-btn" onclick="switchTab('matrix')">Matrix/Vector</button>
+                <button class="tab-btn" onclick="switchTab('greek')">Greek</button>
+            </div>
+
+       
+            <div id="tab-basic" class="keyboard-content active">
+                <div class="keyboard-row">
+                    <button onclick="insertSymbol('(')">(</button>
+                    <button onclick="insertSymbol(')')">)</button>
+                    <button onclick="insertSymbol(',')">,</button>
+                    <button onclick="backspace()" class="btn-del">⌫</button>
+                    <button onclick="clearAll()" class="btn-clear">AC</button>
+                </div>
+                <div class="keyboard-row">
+                    <button onclick="insertSymbol('7')">7</button>
+                    <button onclick="insertSymbol('8')">8</button>
+                    <button onclick="insertSymbol('9')">9</button>
+                    <button onclick="insertSymbol('/')">÷</button>
+                    <button onclick="insertSymbol('%')">%</button>
+                </div>
+                <div class="keyboard-row">
+                    <button onclick="insertSymbol('4')">4</button>
+                    <button onclick="insertSymbol('5')">5</button>
+                    <button onclick="insertSymbol('6')">6</button>
+                    <button onclick="insertSymbol('*')">×</button>
+                    <button onclick="insertSymbol('^')">x^y</button>
+                </div>
+                <div class="keyboard-row">
+                    <button onclick="insertSymbol('1')">1</button>
+                    <button onclick="insertSymbol('2')">2</button>
+                    <button onclick="insertSymbol('3')">3</button>
+                    <button onclick="insertSymbol('-')">-</button>
+                    <button onclick="insertSymbol('sqrt(')">√</button>
+                </div>
+                <div class="keyboard-row">
+                    <button onclick="insertSymbol('0')">0</button>
+                    <button onclick="insertSymbol('.')">.</button>
+                    <button onclick="insertSymbol('e')">e</button>
+                    <button onclick="insertSymbol('+')">+</button>
+                    <button onclick="insertSymbol('pi')">π</button>
+                </div>
+            </div>
+
+            <div id="tab-func" class="keyboard-content">
+                <div class="keyboard-row">
+                    <button onclick="insertSymbol('sin(')">sin</button>
+                    <button onclick="insertSymbol('cos(')">cos</button>
+                    <button onclick="insertSymbol('tan(')">tan</button>
+                    <button onclick="insertSymbol('asin(')">sin⁻¹</button>
+                    <button onclick="insertSymbol('acos(')">cos⁻¹</button>
+                </div>
+                <div class="keyboard-row">
+                    <button onclick="insertSymbol('atan(')">tan⁻¹</button>
+                    <button onclick="insertSymbol('log(')">log</button>
+                    <button onclick="insertSymbol('log10(')">log₁₀</button>
+                    <button onclick="insertSymbol('ln(')">ln</button>
+                    <button onclick="insertSymbol('exp(')">e^x</button>
+                </div>
+                <div class="keyboard-row">
+                    <button onclick="insertSymbol('abs(')">|x|</button>
+                    <button onclick="insertSymbol('floor(')">floor</button>
+                    <button onclick="insertSymbol('ceil(')">ceil</button>
+                    <button onclick="insertSymbol('round(')">round</button>
+                    <button onclick="insertSymbol('sign(')">sign</button>
+                </div>
+                <div class="keyboard-row">
+                    <button onclick="insertSymbol('x')">x</button>
+                    <button onclick="insertSymbol('y')">y</button>
+                    <button onclick="insertSymbol('z')">z</button>
+                    <button onclick="insertSymbol('t')">t</button>
+                    <button onclick="insertSymbol('a')">a</button>
+                </div>
+            </div>
+
+         
+            <div id="tab-calc" class="keyboard-content">
+                <div class="keyboard-row">
+                    <button onclick="insertSymbol('diff(')">d/dx</button>
+                    <button onclick="insertSymbol('integrate(')">∫ dx</button>
+                    <button onclick="insertSymbol('simplify(')">Simplify</button>
+                    <button onclick="insertSymbol('expand(')">Expand</button>
+                    <button onclick="insertSymbol('factor(')">Factor</button>
+                </div>
+                <div class="keyboard-row">
+                    <button onclick="insertSymbol('solve(')">Solve = 0</button>
+                    <button onclick="insertSymbol('limit(')">Limit</button>
+                    <button onclick="insertSymbol('sum(')">Σ Sum</button>
+                    <button onclick="insertSymbol('product(')">Π Prod</button>
+                    <button onclick="insertSymbol('\\partial')">&partial;</button>
+                </div>
+                <div class="keyboard-row">
+                    <button onclick="insertSymbol('\\nabla')">&nabla;</button>
+                    <button onclick="insertSymbol('\\int')">&int;</button>
+                    <button onclick="insertSymbol('\\infty')">&infin;</button>
+                    <button onclick="insertSymbol('!=')">≠</button>
+                    <button onclick="insertSymbol('==')">=</button>
+                </div>
+            </div>
+
+
+            <div id="tab-matrix" class="keyboard-content">
+                <div class="keyboard-row">
+                    <button onclick="insertSymbol('[')">[</button>
+                    <button onclick="insertSymbol(']')">]</button>
+                    <button onclick="insertSymbol(';')">;</button>
+                    <button onclick="insertSymbol('det(')">det</button>
+                    <button onclick="insertSymbol('inv(')">inv</button>
+                </div>
+                <div class="keyboard-row">
+                    <button onclick="insertSymbol('transpose(')">Aᵀ</button>
+                    <button onclick="insertSymbol('dot(')">dot</button>
+                    <button onclick="insertSymbol('cross(')">cross</button>
+                    <button onclick="insertSymbol('norm(')">norm</button>
+                    <button onclick="insertSymbol('unit(')">unit</button>
+                </div>
+                <div class="keyboard-row">
+                    <button onclick="insertSymbol('eigs(')">eigs</button>
+                    <button onclick="insertSymbol('rank(')">rank</button>
+                    <button onclick="insertSymbol('size(')">size</button>
+                    <button onclick="insertSymbol('diag(')">diag</button>
+                    <button onclick="insertSymbol('identity(')">I</button>
+                </div>
+            </div>
+
+            <div id="tab-greek" class="keyboard-content">
+                <div class="keyboard-row">
+                    <button onclick="insertSymbol('\\alpha')">&alpha;</button>
+                    <button onclick="insertSymbol('\\beta')">&beta;</button>
+                    <button onclick="insertSymbol('\\gamma')">&gamma;</button>
+                    <button onclick="insertSymbol('\\delta')">&delta;</button>
+                    <button onclick="insertSymbol('\\epsilon')">&epsilon;</button>
+                </div>
+                <div class="keyboard-row">
+                    <button onclick="insertSymbol('\\theta')">&theta;</button>
+                    <button onclick="insertSymbol('\\lambda')">&lambda;</button>
+                    <button onclick="insertSymbol('\\mu')">&mu;</button>
+                    <button onclick="insertSymbol('\\pi')">&pi;</button>
+                    <button onclick="insertSymbol('\\sigma')">&sigma;</button>
+                </div>
+                <div class="keyboard-row">
+                    <button onclick="insertSymbol('\\phi')">&phi;</button>
+                    <button onclick="insertSymbol('\\omega')">&omega;</button>
+                    <button onclick="insertSymbol('\\Delta')">&Delta;</button>
+                    <button onclick="insertSymbol('\\Sigma')">&Sigma;</button>
+                    <button onclick="insertSymbol('\\Omega')">&Omega;</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="output-section">
+            <div id="stepDisplay" class="steps-box"></div>
+            <div id="resultDisplay" class="math-display"></div>
+        </div>
+
+        <div class="graph-section">
+            <div id="plotDiv" class="graph-container"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
