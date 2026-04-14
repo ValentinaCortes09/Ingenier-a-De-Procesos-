@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Admin - Primitivos</title>
+    
+    <!-- FUENTES -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <!-- ICONOS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- ESTILOS DEL ADMIN - CORREGIDO -->
+    <link rel="stylesheet" href="../css/admin.css">
+    
+    <!-- Verificación de sesión antes de cargar -->
+    <script>
+        if (localStorage.getItem('primitivos_admin_logged') !== 'true') {
+            window.location.href = 'login.html';
+        }
+    </script>
+</head>
+<body>
+
+    <!--   
+         SIDEBAR / BARRA LATERAL
+          -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-crown"></i> PRIMITIVOS</h2>
+            <p>Panel de Control</p>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <a href="#dashboard" class="nav-item active" data-section="dashboard">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+            <a href="#pedidos" class="nav-item" data-section="pedidos">
+                <i class="fas fa-shopping-cart"></i> Pedidos
+                <span class="badge" id="pedidosBadge" style="display:none;">0</span>
+            </a>
+            <a href="#reservas-juegos" class="nav-item" data-section="reservas-juegos">
+                <i class="fas fa-gamepad"></i> Reservas Juegos
+            </a>
+            <a href="#inventario" class="nav-item" data-section="inventario">
+                <i class="fas fa-boxes"></i> Inventario
+            </a>
+            <a href="#facturacion" class="nav-item" data-section="facturacion">
+                <i class="fas fa-file-invoice-dollar"></i> Facturación
+            </a>
+            <a href="#clientes" class="nav-item" data-section="clientes">
+                <i class="fas fa-users"></i> Clientes
+            </a>
+            <a href="#mesas" class="nav-item" data-section="mesas">
+                <i class="fas fa-chair"></i> Mesas
+            </a>
+            <a href="#reportes" class="nav-item" data-section="reportes">
+                <i class="fas fa-chart-bar"></i> Reportes
+            </a>
+            <a href="#configuracion" class="nav-item" data-section="configuracion">
+                <i class="fas fa-cog"></i> Configuración
+            </a>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <button onclick="logout()" class="btn-logout">
+                <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+            </button>
+        </div>
+    </aside>
+
+    <!--  CONTENIDO PRINCIPAL -->
+    <main class="main-content">
+        
+        <!-- HEADER SUPERIOR -->
+        <header class="top-header">
+            <button class="btn-menu" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+            <div class="header-right">
+                <div class="notifications">
+                    <i class="fas fa-bell"></i>
+                    <span class="notif-count" id="notifCount" style="display:none;">0</span>
+                </div>
+                <div class="user-info">
+                    <img src="https://ui-avatars.com/api/?name=Admin&background=FFD700&color=000&size=40" alt="Admin">
+                    <span id="adminName">Administrador</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- SECCIÓN 1: DASHBOARD-->
+        <section id="dashboard" class="section active">
+            <div class="section-header">
+                <div>
+                    <h1>Dashboard</h1>
+                    <p>Resumen general - <span id="fechaHoy"></span></p>
+                </div>
+            </div>
+            
+            <!-- Tarjetas de estadísticas -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:linear-gradient(135deg,#FFD700,#FF8C00);">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="statPedidosHoy">0</h3>
+                        <p>Pedidos / Juegos</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:linear-gradient(135deg,#00C851,#007E33);">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="statVentasHoy">$0</h3>
+                        <p>Ventas Hoy</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:linear-gradient(135deg,#2979FF,#1565C0);">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="statClientesHoy">0</h3>
+                        <p>Clientes Hoy</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:linear-gradient(135deg,#FF1744,#D50000);">
+                        <i class="fas fa-chair"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="statMesasOcupadas">0/12</h3>
+                        <p>Mesas Ocupadas</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Grid de actividad -->
+            <div class="dashboard-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-clock"></i> Actividad Reciente</h3>
+                    </div>
+                    <div class="card-body" style="max-height:400px; overflow-y:auto;">
+                        <div id="recentOrders">
+                            <p style="text-align:center; color:#888; padding:40px;">Sin actividad</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-gamepad"></i> Juegos Hoy</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="mini-stats">
+                            <div class="mini-stat">
+                                <i class="fas fa-bowling-ball" style="color:#FF6B6B;"></i>
+                                <div><span>Bolos</span><strong id="miniBolos">0</strong></div>
+                            </div>
+                            <div class="mini-stat">
+                                <i class="fas fa-futbol" style="color:#4ECDC4;"></i>
+                                <div><span>Futbolín</span><strong id="miniFutbolin">0</strong></div>
+                            </div>
+                            <div class="mini-stat">
+                                <i class="fas fa-table-tennis" style="color:#A8E6CF;"></i>
+                                <div><span>Ping Pong</span><strong id="miniPingPong">0</strong></div>
+                            </div>
+                            <div class="mini-stat">
+                                <i class="fas fa-circle" style="color:#FFD93D;"></i>
+                                <div><span>Billares</span><strong id="miniBillares">0</strong></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!--SECCIÓN 2: PEDIDOS-->
+        <section id="pedidos" class="section">
+            <div class="section-header">
+                <div>
+                    <h1>Gestión de Pedidos</h1>
+                    <p>Administra todos los pedidos</p>
+                </div>
+                <button class="btn-primary" onclick="openModal('pedidoModal')">
+                    <i class="fas fa-plus"></i> Nuevo Pedido
+                </button>
+            </div>
+            
+            <!-- Filtros -->
+            <div class="filter-bar">
+                <button class="filter-btn active" onclick="filtrarPedidos('todos',this)">Todos</button>
+                <button class="filter-btn" onclick="filtrarPedidos('pendiente',this)"><span class="badge badge-pendiente">Pendientes</span></button>
+                <button class="filter-btn" onclick="filtrarPedidos('en-proceso',this)"><span class="badge badge-en-proceso">En Proceso</span></button>
+                <button class="filter-btn" onclick="filtrarPedidos('completado',this)"><span class="badge badge-completado">Completados</span></button>
+            </div>
+            
+            <div class="card">
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th># Pedido</th>
+                                <th>Cliente</th>
+                                <th>Mesa</th>
+                                <th>Items</th>
+                                <th>Total</th>
+                                <th>Estado</th>
+                                <th>Fecha</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pedidosTable">
+                            <tr><td colspan="8" style="text-align:center; padding:40px; color:#888;">Sin pedidos</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: RESERVAS DE JUEGOS-->
+        <section id="reservas-juegos" class="section">
+            <div class="section-header">
+                <div>
+                    <h1>Reservas de Juegos</h1>
+                    <p>Gestiona bolera, futbolín, billares y ping pong</p>
+                </div>
+                <button class="btn-primary" onclick="openModal('reservaJuegoModal')">
+                    <i class="fas fa-plus"></i> Nueva Reserva
+                </button>
+            </div>
+            
+            <!-- Estadísticas de juegos -->
+            <div class="stats-grid" style="margin-bottom:20px;">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:linear-gradient(135deg,#FF6B6B,#EE5A5A);">
+                        <i class="fas fa-bowling-ball"></i>
+                    </div>
+                    <div class="stat-info"><h3 id="statBolos">0</h3><p>Bolos</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:linear-gradient(135deg,#4ECDC4,#44BDAD);">
+                        <i class="fas fa-futbol"></i>
+                    </div>
+                    <div class="stat-info"><h3 id="statFutbolin">0</h3><p>Futbolín</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:linear-gradient(135deg,#A8E6CF,#88D8B0);">
+                        <i class="fas fa-table-tennis"></i>
+                    </div>
+                    <div class="stat-info"><h3 id="statPingPong">0</h3><p>Ping Pong</p></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background:linear-gradient(135deg,#FFD93D,#FFC93C);">
+                        <i class="fas fa-circle"></i>
+                    </div>
+                    <div class="stat-info"><h3 id="statBillares">0</h3><p>Billares</p></div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th># Reserva</th>
+                                <th>Juego</th>
+                                <th>Cliente</th>
+                                <th>Fecha/Hora</th>
+                                <th>Duración</th>
+                                <th>Personas</th>
+                                <th>Total</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reservasJuegosTable">
+                            <tr><td colspan="9" style="text-align:center; padding:40px; color:#888;">Sin reservas</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: INVENTARIO-->
+        <section id="inventario" class="section">
+            <div class="section-header">
+                <div>
+                    <h1>Inventario</h1>
+                    <p>Control de productos y stock</p>
+                </div>
+                <button class="btn-primary" onclick="openModal('productoModal')">
+                    <i class="fas fa-plus"></i> Agregar Producto
+                </button>
+            </div>
+            
+            <div class="card">
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Categoría</th>
+                                <th>Stock</th>
+                                <th>Precio</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inventarioTable">
+                            <tr><td colspan="6" style="text-align:center; padding:40px; color:#888;">Sin productos</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!--SECCIÓN 5: FACTURACIÓN-->
+        <section id="facturacion" class="section">
+            <div class="section-header">
+                <div>
+                    <h1>Facturación Electrónica</h1>
+                    <p>Conforme a normativa DIAN Colombia</p>
+                </div>
+                <button class="btn-primary" onclick="openModal('facturaModal')">
+                    <i class="fas fa-file-invoice"></i> Nueva Factura
+                </button>
+            </div>
+            
+            <!-- Datos del establecimiento -->
+            <div class="card" style="margin-bottom:20px;">
+                <div class="card-header">
+                    <h3><i class="fas fa-building"></i> Datos del Establecimiento</h3>
+                </div>
+                <div class="card-body">
+                    <div class="info-grid">
+                        <div><strong>Razón Social:</strong> Primitivos Restaurante Bar SAS</div>
+                        <div><strong>NIT:</strong> 901.234.567-8</div>
+                        <div><strong>Régimen:</strong> Responsable de IVA</div>
+                        <div><strong>Resolución DIAN:</strong> 18740012345678 del 2024</div>
+                        <div><strong>Dirección:</strong> Centro Comercial Multiplaza, Bogotá</div>
+                        <div><strong>Teléfono:</strong> 300 750 9970</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>N° Factura</th>
+                                <th>Cliente</th>
+                                <th>NIT/CC</th>
+                                <th>Subtotal</th>
+                                <th>IVA (19%)</th>
+                                <th>Total</th>
+                                <th>CUFE</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="facturasTable">
+                            <tr><td colspan="8" style="text-align:center; padding:40px; color:#888;">Sin facturas</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 6: CLIENTES-->
+        <section id="clientes" class="section">
+            <div class="section-header">
+                <div>
+                    <h1>Base de Datos de Clientes</h1>
+                    <p>Historial y datos</p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Documento</th>
+                                <th>Teléfono</th>
+                                <th>Email</th>
+                                <th>Total Compras</th>
+                                <th>Última Visita</th>
+                            </tr>
+                        </thead>
+                        <tbody id="clientesTable">
+                            <tr><td colspan="6" style="text-align:center; padding:40px; color:#888;">Sin clientes</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 7: MESAS-->
+        <section id="mesas" class="section">
+            <div class="section-header">
+                <div>
+                    <h1>Control de Mesas</h1>
+                    <p>Estado actual</p>
+                </div>
+                <button class="btn-secondary" onclick="resetearMesas()">
+                    <i class="fas fa-redo"></i> Resetear Todas
+                </button>
+            </div>
+            
+            <div class="mesas-grid" id="mesasGrid"></div>
+        </section>
+
+        <!-- SECCIÓN 8: REPORTES-->
+        <section id="reportes" class="section">
+            <div class="section-header">
+                <div>
+                    <h1>Reportes</h1>
+                    <p>Análisis de ventas</p>
+                </div>
+            </div>
+            
+            <div class="reportes-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-trophy"></i> Más Vendidos</h3>
+                    </div>
+                    <div class="card-body" id="productosMasVendidos">
+                        <p style="text-align:center; color:#888; padding:30px;">Sin datos</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-chart-pie"></i> Por Categoría</h3>
+                    </div>
+                    <div class="card-body" id="reporteCategorias">
+                        <p style="text-align:center; color:#888; padding:30px;">Sin datos</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!--SECCIÓN 9: CONFIGURACIÓN-->
+        <section id="configuracion" class="section">
+            <div class="section-header">
+                <div>
+                    <h1>Configuración</h1>
+                    <p>Datos e impuestos</p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-body">
+                    <form id="configForm" onsubmit="guardarConfig(event)">
+                        <h3>Datos del Establecimiento</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Razón Social</label>
+                                <input type="text" value="Primitivos Restaurante Bar SAS">
+                            </div>
+                            <div class="form-group">
+                                <label>NIT</label>
+                                <input type="text" value="901.234.567-8">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Resolución DIAN</label>
+                                <input type="text" value="18740012345678">
+                            </div>
+                            <div class="form-group">
+                                <label>Fecha</label>
+                                <input type="date" value="2024-01-01">
+                            </div>
+                        </div>
+                        
+                        <h3>Impuestos</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>IVA (%)</label>
+                                <input type="number" value="19">
+                            </div>
+                            <div class="form-group">
+                                <label>Retención (%)</label>
+                                <input type="number" value="2.5">
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn-primary" style="margin-top:20px;">
+                            <i class="fas fa-save"></i> Guardar
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!--MODALES DEL PANEL ADMIN-->
+
+    <!-- Modal: Nuevo Pedido -->
+    <div id="pedidoModal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2><i class="fas fa-shopping-cart"></i> Nuevo Pedido</h2>
+                <button class="modal-close" onclick="closeModal('pedidoModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="pedidoForm" onsubmit="guardarPedido(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Cliente</label>
+                            <input type="text" id="pedidoCliente" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Mesa</label>
+                            <select id="pedidoMesa" required><option value="">Seleccionar</option></select>
+                        </div>
+                    </div>
+                    <h3 style="color:var(--color-gold); margin:20px 0 15px;">Productos</h3>
+                    <div id="pedidoItems"></div>
+                    <button type="button" class="btn-secondary" onclick="agregarItemPedido()" style="margin-bottom:15px;">
+                        <i class="fas fa-plus"></i> Agregar
+                    </button>
+                    <div class="pedido-total">
+                        <h3>Total: $<span id="pedidoTotal">0</span></h3>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-secondary" onclick="closeModal('pedidoModal')">Cancelar</button>
+                        <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Editar Pedido -->
+    <div id="editarPedidoModal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2><i class="fas fa-edit"></i> Editar Pedido #<span id="editarPedidoId"></span></h2>
+                <button class="modal-close" onclick="closeModal('editarPedidoModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="editarPedidoForm" onsubmit="guardarEdicionPedido(event)">
+                    <input type="hidden" id="editarPedidoOriginalId">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Cliente</label>
+                            <input type="text" id="editarPedidoCliente" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Mesa</label>
+                            <select id="editarPedidoMesa" required></select>
+                        </div>
+                    </div>
+                    <h3 style="color:var(--color-gold); margin:20px 0 15px;">Productos</h3>
+                    <div id="editarPedidoItems"></div>
+                    <button type="button" class="btn-secondary" onclick="agregarItemEditarPedido()" style="margin-bottom:15px;">
+                        <i class="fas fa-plus"></i> Agregar
+                    </button>
+                    <div class="pedido-total">
+                        <h3>Total: $<span id="editarPedidoTotal">0</span></h3>
+                    </div>
+                    <div class="form-group">
+                        <label>Estado</label>
+                        <select id="editarPedidoEstado">
+                            <option value="pendiente">Pendiente</option>
+                            <option value="en-proceso">En Preparación</option>
+                            <option value="completado">Completado</option>
+                            <option value="cancelado">Cancelado</option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-danger" onclick="eliminarPedido()" style="margin-right:auto;">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </button>
+                        <button type="button" class="btn-secondary" onclick="closeModal('editarPedidoModal')">Cancelar</button>
+                        <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Nueva Reserva de Juego -->
+    <div id="reservaJuegoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-gamepad"></i> Nueva Reserva</h2>
+                <button class="modal-close" onclick="closeModal('reservaJuegoModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="reservaJuegoForm" onsubmit="guardarReservaJuego(event)">
+                    <div class="form-group">
+                        <label>Juego</label>
+                        <select id="reservaJuegoTipo" required onchange="actualizarPrecioJuego()">
+                            <option value="">Seleccionar</option>
+                            <option value="Billares" data-precio="15000">Billares - $15.000/h</option>
+                            <option value="Futbolín" data-precio="12000">Futbolín - $12.000/h</option>
+                            <option value="Bolos" data-precio="20000">Bolos - $20.000/h</option>
+                            <option value="Ping Pong" data-precio="10000">Ping Pong - $10.000/h</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Cliente</label>
+                            <input type="text" id="reservaJuegoCliente" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Teléfono</label>
+                            <input type="tel" id="reservaJuegoTelefono" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Fecha</label>
+                            <input type="date" id="reservaJuegoFecha" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Hora</label>
+                            <input type="time" id="reservaJuegoHora" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Duración (h)</label>
+                            <select id="reservaJuegoDuracion" onchange="calcularTotalReserva()">
+                                <option value="1">1 hora</option>
+                                <option value="2">2 horas</option>
+                                <option value="3">3 horas</option>
+                                <option value="4">4 horas</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Personas</label>
+                            <input type="number" id="reservaJuegoPersonas" min="1" max="20" value="2">
+                        </div>
+                    </div>
+                    <div class="factura-totales">
+                        <div class="total-row"><span>Precio/hora:</span><span>$<span id="reservaJuegoPrecioHora">0</span></span></div>
+                        <div class="total-row total-final"><span>TOTAL:</span><span>$<span id="reservaJuegoTotal">0</span></span></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-secondary" onclick="closeModal('reservaJuegoModal')">Cancelar</button>
+                        <button type="submit" class="btn-primary"><i class="fas fa-check"></i> Confirmar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Agregar/Editar Producto -->
+    <div id="productoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-box"></i> <span id="productoModalTitle">Agregar Producto</span></h2>
+                <button class="modal-close" onclick="closeModal('productoModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="productoForm" onsubmit="guardarProducto(event)">
+                    <input type="hidden" id="productoIdEdit">
+                    <div class="form-group">
+                        <label>Nombre</label>
+                        <input type="text" id="productoNombre" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Categoría</label>
+                            <select id="productoCategoria" required>
+                                <option value="Entradas">Entradas</option>
+                                <option value="Platos">Platos Principales</option>
+                                <option value="Cócteles">Cócteles</option>
+                                <option value="Bebidas">Bebidas</option>
+                                <option value="Postres">Postres</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Precio ($)</label>
+                            <input type="number" id="productoPrecio" required min="0">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Stock</label>
+                            <input type="number" id="productoStock" required min="0">
+                        </div>
+                        <div class="form-group">
+                            <label>Estado</label>
+                            <select id="productoEstado">
+                                <option value="disponible">Disponible</option>
+                                <option value="agotado">Agotado</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Descripción</label>
+                        <textarea id="productoDescripcion" rows="2"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Imagen</label>
+                        <input type="file" id="productoImagenInput" accept="image/*" onchange="previewImage(this)">
+                        <input type="hidden" id="productoImagenData">
+                        <img id="productoImagenPreview" src="" style="max-width:100%; max-height:150px; margin-top:10px; display:none; border-radius:8px;">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-secondary" onclick="closeModal('productoModal')">Cancelar</button>
+                        <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Generar Factura -->
+    <div id="facturaModal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2><i class="fas fa-file-invoice"></i> Generar Factura</h2>
+                <button class="modal-close" onclick="closeModal('facturaModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="facturaForm" onsubmit="guardarFactura(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Tipo Doc</label>
+                            <select id="facturaTipoDoc" required>
+                                <option value="CC">CC</option>
+                                <option value="NIT">NIT</option>
+                                <option value="CE">CE</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Número</label>
+                            <input type="text" id="facturaNumeroDoc" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nombre</label>
+                            <input type="text" id="facturaNombre" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="facturaEmail" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Teléfono</label>
+                            <input type="tel" id="facturaTelefono" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Dirección</label>
+                            <input type="text" id="facturaDireccion" required>
+                        </div>
+                    </div>
+                    <h3>Items</h3>
+                    <div id="facturaItems"></div>
+                    <button type="button" class="btn-secondary" onclick="agregarItemFactura()" style="margin-bottom:15px;">
+                        <i class="fas fa-plus"></i> Agregar Item
+                    </button>
+                    <div class="factura-totales">
+                        <div class="total-row"><span>Subtotal:</span><span>$<span id="facturaSubtotal">0</span></span></div>
+                        <div class="total-row"><span>IVA (19%):</span><span>$<span id="facturaIva">0</span></span></div>
+                        <div class="total-row total-final"><span>TOTAL:</span><span>$<span id="facturaTotal">0</span></span></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-secondary" onclick="closeModal('facturaModal')">Cancelar</button>
+                        <button type="submit" class="btn-primary"><i class="fas fa-check"></i> Generar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT DEL PANEL ADMIN - CORREGIDO -->
+    <script src="../js/admin.js"></script>
+</body>
+</html>

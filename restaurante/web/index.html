@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Primitivos | Restaurante, Juegos y Bar</title>
+    <meta name="description" content="Restaurante temático con bar, bolera, billares, ping pong y futbolines en Centro Comercial Multiplaza, Bogotá">
+    
+    <!-- FUENTES DE GOOGLE -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+   
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+    <!--  HEADER / NAVEGACIÓN PRINCIPAL  -->
+    <header id="header">
+        <div class="container nav-container">
+            <a href="#" class="logo">PRIMITIVOS</a>
+            
+            <!-- Menú Desktop -->
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#menu">Menú</a></li>
+                    <li><a href="#experiencia">Experiencia</a></li>
+                    <li><a href="#juegos">Juegos</a></li>
+                    <li><a href="#reservas">Reservas</a></li>
+                    <li><a href="#ubicacion">Ubicación</a></li>
+                    <li><a href="#reservas" class="nav-btn">Reservar Ahora</a></li>
+                </ul>
+            </nav>
+            
+            <!-- Botón menú móvil -->
+            <div class="menu-toggle" id="mobile-menu"><i class="fas fa-bars"></i></div>
+        </div>
+        
+        <!-- Menú desplegable móvil -->
+        <div class="mobile-nav-content">
+            <a href="#inicio">Inicio</a>
+            <a href="#menu">Menú</a>
+            <a href="#experiencia">Experiencia</a>
+            <a href="#juegos">Juegos</a>
+            <a href="#reservas">Reservas</a>
+            <a href="#ubicacion">Ubicación</a>
+            <a href="#reservas" class="nav-btn">Reservar Ahora</a>
+        </div>
+    </header>
+
+    <!--  SECCIÓN HERO / BANNER PRINCIPAL  -->
+    <section class="hero" id="inicio">
+        <div class="hero-content container">
+            <h1>Vive la Experiencia<br>PRIMITIVOS</h1>
+            <p>Restaurante temático con bar, bolera, billares, ping pong y futbolines en el corazón de Bogotá.</p>
+            <div class="hero-buttons">
+                <a href="#menu" class="btn btn-primary">Ver Menú</a>
+                <a href="#reservas" class="btn btn-outline">Reservar Mesa</a>
+            </div>
+        </div>
+    </section>
+
+    <!--  SECCIÓN CARACTERÍSTICAS / FEATURES  -->
+    <section class="features container">
+        <h2 class="section-title">Más Que un Restaurante</h2>
+        <p class="section-subtitle">Primitivos es un espacio temático donde convergen la alta gastronomía, la coctelería de autor y el entretenimiento.</p>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-bowling-ball"></i></div>
+                <h3>Bolera y Mini Bolera</h3>
+                <p>Diversión garantizada con nuestras pistas de bolos profesionales.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-table-tennis"></i></div>
+                <h3>Billares y Juegos</h3>
+                <p>Mesas de billar, ping pong y futbolines para toda la familia.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-cocktail"></i></div>
+                <h3>Bar Premium</h3>
+                <p>Cócteles artesanales, licores seleccionados y el mejor ambiente.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-utensils"></i></div>
+                <h3>Gastronomía</h3>
+                <p>Deliciosa comida contemporánea para todos los gustos.</p>
+            </div>
+        </div>
+    </section>
+
+    <!--  SECCIÓN MENÚ (DINÁMICO DESDE ADMIN)
+         Se genera automáticamente desde localStorage  -->
+    <section class="menu-section" id="menu">
+        <div class="container">
+            <h2 class="section-title">Nuestro Menú</h2>
+            <p class="section-subtitle">Sabores únicos que despiertan tus sentidos</p>
+            
+            <!-- Contenedor que se llena con JavaScript -->
+            <div class="menu-grid" id="menuGridContainer">
+                <p style="text-align:center; color:#888; grid-column:1/-1; padding:40px;">Cargando menú...</p>
+            </div>
+            
+            <div style="text-align: center; margin-top: 40px;">
+                <button id="verMenuCompletoBtn" class="btn btn-primary">
+                    Ver Menú Completo <i class="fas fa-utensils" style="margin-left: 5px;"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+    <!-- SECCIÓN GALERÍA / EXPERIENCIA-->
+    <section class="experience" id="experiencia">
+        <div class="container">
+            <h2 class="section-title">La Experiencia Primitivos</h2>
+            <p class="section-subtitle">Cada detalle pensado para tu disfrute</p>
+            <div class="gallery-grid">
+        <div class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80" 
+                alt="Restaurante elegante">
+        </div>
+        <div class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1572116469696-31de0f17cc34?w=800&q=80" 
+                alt="Ambiente bar">
+        </div>
+        <div class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1534234828563-025082851261?w=800&q=80" 
+                alt="Billar">
+        </div>
+        <div class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=800&q=80" 
+                alt="Cócteles">
+        </div>
+        <div class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=800&q=80" 
+                alt="Comida gourmet">
+        </div>
+        <div class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800&q=80" 
+                alt="Pizza">
+        </div>
+    </div>
+        </div>
+    </section>
+
+    <!--  SECCIÓN ZONA DE JUEGOS  -->
+    <section class="gaming-zone" id="juegos">
+        <div class="container">
+            <h2 class="section-title">Zona de Juegos</h2>
+            <p class="section-subtitle">Diversión sin límites en cada visita</p>
+            
+            <div class="games-grid">
+                <!-- Billares -->
+                <div class="game-card">
+                    <div class="game-icon"><i class="fas fa-circle"></i></div>
+                    <h3>Billares</h3>
+                    <p>Mesas profesionales con iluminación ambiente</p>
+                    <div class="game-price"><span class="price-hour">$15.000<span>/hora</span></span></div>
+                    <button class="btn btn-cotizar" onclick="openQuoteModal('Billares', 15000)">
+                        <i class="fas fa-gamepad"></i> COTIZAR
+                    </button>
+                </div>
+                
+                <!-- Futbolín -->
+                <div class="game-card">
+                    <div class="game-icon"><i class="fas fa-futbol"></i></div>
+                    <h3>Futbolín</h3>
+                    <p>Mesas de futbolín profesional para partidos intensos</p>
+                    <div class="game-price"><span class="price-hour">$12.000<span>/hora</span></span></div>
+                    <button class="btn btn-cotizar" onclick="openQuoteModal('Futbolín', 12000)">
+                        <i class="fas fa-gamepad"></i> COTIZAR
+                    </button>
+                </div>
+                
+                <!-- Bolos -->
+                <div class="game-card">
+                    <div class="game-icon"><i class="fas fa-bowling-ball"></i></div>
+                    <h3>Bolos</h3>
+                    <p>Pistas de bolera y mini bolera con ambiente neón</p>
+                    <div class="game-price"><span class="price-hour">$20.000<span>/hora</span></span></div>
+                    <button class="btn btn-cotizar" onclick="openQuoteModal('Bolos', 20000)">
+                        <i class="fas fa-gamepad"></i> COTIZAR
+                    </button>
+                </div>
+                
+                <!-- Ping Pong -->
+                <div class="game-card">
+                    <div class="game-icon"><i class="fas fa-table-tennis"></i></div>
+                    <h3>Ping Pong</h3>
+                    <p>Mesas profesionales para torneos y diversión</p>
+                    <div class="game-price"><span class="price-hour">$10.000<span>/hora</span></span></div>
+                    <button class="btn btn-cotizar" onclick="openQuoteModal('Ping Pong', 10000)">
+                        <i class="fas fa-gamepad"></i> COTIZAR
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--  SECCIÓN RESERVAS  -->
+    <section class="reservation-section" id="reservas">
+        <div class="container">
+            <h2 class="section-title">Reserva Tu Mesa</h2>
+            <p class="section-subtitle">Asegura tu lugar en la mejor experiencia de Bogotá</p>
+            
+            <div class="reservation-layout">
+                <!-- Información de reserva -->
+                <div class="reservation-info">
+                    <div class="info-item">
+                        <div class="info-icon"><i class="fas fa-calendar-alt"></i></div>
+                        <div class="info-text">
+                            <h4>Reserva Anticipada</h4>
+                            <p>Garantiza tu mesa en las fechas más solicitadas. Ideal para grupos y eventos especiales.</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon"><i class="fas fa-user-friends"></i></div>
+                        <div class="info-text">
+                            <h4>Eventos Privados</h4>
+                            <p>Contamos con comedor privado para celebraciones, reuniones corporativas y eventos especiales.</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon"><i class="fas fa-headset"></i></div>
+                        <div class="info-text">
+                            <h4>Atención Personalizada</h4>
+                            <p>Nuestro equipo está disponible para ayudarte a planificar tu visita perfecta.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tarjeta de contacto -->
+                <div class="reservation-card">
+                    <h3>Contáctanos</h3>
+                    <a href="https://wa.me/573007509970" class="btn-contact whatsapp">
+                        <i class="fab fa-whatsapp"></i> Reservar por WhatsApp
+                    </a>
+                    <a href="tel:+573007509970" class="btn-contact phone">
+                        <i class="fas fa-phone-alt"></i> 300 750 9970
+                    </a>
+                    <div class="hours-info">
+                        <p>Horario de Atención</p>
+                        <strong>Abierto hasta las 11:45 PM</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--  SECCIÓN UBICACIÓN / MAPA  -->
+    <section class="location-section" id="ubicacion">
+        <div class="container">
+            <h2 class="section-title">Encuéntranos</h2>
+            <p class="section-subtitle">En el corazón de Bogotá</p>
+            
+            <div class="location-layout">
+                <!-- Información de ubicación -->
+                <div class="location-info">
+                    <div class="loc-item">
+                        <div class="loc-icon"><i class="fas fa-map-marker-alt"></i></div>
+                        <div>
+                            <h4>Dirección</h4>
+                            <p>Centro Comercial Multiplaza, Bogotá</p>
+                        </div>
+                    </div>
+                    <div class="loc-item">
+                        <div class="loc-icon"><i class="fas fa-clock"></i></div>
+                        <div>
+                            <h4>Horario</h4>
+                            <p>Lunes a Domingo<br>Hasta las 11:45 PM</p>
+                        </div>
+                    </div>
+                    <div class="loc-item">
+                        <div class="loc-icon"><i class="fas fa-directions"></i></div>
+                        <div>
+                            <h4>Cómo Llegar</h4>
+                            <p>Fácil acceso en transporte público y amplio parqueadero disponible</p>
+                            <a href="https://maps.app.goo.gl/u8mfiSZDu4DcyQhBA" target="_blank" class="btn btn-primary" style="margin-top: 10px; font-size: 0.8rem; padding: 8px 20px;">
+                                <i class="fas fa-location-arrow"></i> Abrir en Google Maps
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Mapa de Google -->
+                <div class="map-container">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7487.978702057143!2d-74.12496643091971!3d4.650804006299218!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3f9d44966518c9%3A0x39d7a8d7600c8985!2sDinoverso%20Restaurante%2C%20Juegos%2C%20Bar!5e1!3m2!1ses!2sco!4v1775933112318!5m2!1ses!2sco" 
+                        width="100%" 
+                        height="400" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade" 
+                        title="Ubicación de Dinoverso Restaurante">
+                    </iframe>
+                    <div style="text-align: center; margin-top: 15px;">
+                        <a href="https://maps.app.goo.gl/u8mfiSZDu4DcyQhBA" target="_blank" style="color: var(--color-gold); font-size: 0.9rem; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+                            <i class="fas fa-external-link-alt"></i> Abrir mapa completo en Google Maps
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--  SECCIÓN TESTIMONIOS / OPINIONES  -->
+    <section class="testimonials">
+        <div class="container">
+            <div class="stars-header">
+                <div class="stars">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                </div>
+                <h2 class="section-title">4.4 Estrellas</h2>
+                <p class="section-subtitle">4,716 opiniones en Google - Lo que dicen nuestros clientes</p>
+            </div>
+            
+            <div class="reviews-grid">
+                <div class="review-card">
+                    <div class="review-stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="review-text">"Increíble experiencia! La comida es espectacular y el ambiente perfecto para pasar una noche con amigos. Los juegos hacen que sea único en Bogotá."</p>
+                    <div class="review-author">
+                        <strong>María González</strong>
+                        <span>Hace 2 semanas</span>
+                    </div>
+                    <i class="fas fa-quote-right quote-icon"></i>
+                </div>
+                
+                <div class="review-card">
+                    <div class="review-stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="review-text">"Los cócteles son de otro nivel y la atención es excelente. Celebramos mi cumpleaños en el comedor privado y todo fue perfecto."</p>
+                    <div class="review-author">
+                        <strong>Carlos Ramírez</strong>
+                        <span>Hace 1 mes</span>
+                    </div>
+                    <i class="fas fa-quote-right quote-icon"></i>
+                </div>
+                
+                <div class="review-card">
+                    <div class="review-stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                    </div>
+                    <p class="review-text">"Me encanta venir los viernes! La hora feliz es genial y siempre hay buen ambiente. La mini bolera es súper divertida."</p>
+                    <div class="review-author">
+                        <strong>Andrea Torres</strong>
+                        <span>Hace 3 semanas</span>
+                    </div>
+                    <i class="fas fa-quote-right quote-icon"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--  FOOTER / PIE DE PÁGINA  -->
+    <footer>
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <h3 class="footer-logo">PRIMITIVOS</h3>
+                <p>Restaurante temático con bar, bolera, mini bolera, billares, ping pong y futbolines en el corazón de Bogotá</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-col">
+                <h4>Navegación</h4>
+                <ul>
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#menu">Menú</a></li>
+                    <li><a href="#experiencia">Experiencia</a></li>
+                    <li><a href="#juegos">Juegos</a></li>
+                    <li><a href="#reservas">Reservas</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h4>Horario</h4>
+                <p><i class="fas fa-clock"></i> Lunes - Domingo</p>
+                <p style="color: var(--color-gold);">Abierto hasta las 11:45 PM</p>
+            </div>
+            
+            <div class="footer-col">
+                <h4>Contacto</h4>
+                <p><i class="fas fa-map-marker-alt"></i> Centro Comercial Multiplaza, Bogotá</p>
+                <p><i class="fas fa-phone"></i> 300 750 9970</p>
+                <p><i class="fas fa-globe"></i> primitivorestaurantebolerabar.com</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2026 Primitivos - Dinoverso. Todos los derechos reservados.</p>
+        </div>
+        
+        <!-- Enlace discreto al login de admin -->
+        <div style="text-align: center; padding: 20px; border-top: 1px solid rgba(255,215,0,0.1);">
+            <a href="login.html" style="color: rgba(255,215,0,0.3); font-size: 0.75rem; text-decoration: none; transition: all 0.3s;" 
+               onmouseover="this.style.color='var(--color-gold)'" 
+               onmouseout="this.style.color='rgba(255,215,0,0.3)'">
+                <i class="fas fa-lock"></i> Acceso Admin
+            </a>
+        </div>
+    </footer>
+
+    <!--  MODAL: VISOR DE MENÚ (Categoría o Completo)  -->
+    <div id="menuModal" class="menu-modal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose"><i class="fas fa-times"></i></button>
+            <div class="modal-header">
+                <h2 id="modalTitle">Nombre de la Categoría</h2>
+                <p id="modalSubtitle">Descripción de la categoría</p>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Contenido dinámico -->
+            </div>
+        </div>
+    </div>
+
+    <!--  MODAL: COTIZACIÓN DE JUEGOS  -->
+    <div id="quoteModal" class="quote-modal">
+        <div class="quote-modal-content">
+            <button class="quote-modal-close" onclick="closeQuoteModal()"><i class="fas fa-times"></i></button>
+            <div class="quote-header">
+                <i class="fas fa-gamepad"></i>
+                <h2>Cotizar <span id="gameName">Juego</span></h2>
+            </div>
+            <div class="quote-body">
+                <div class="price-display">
+                    <span class="price-label">Precio por hora:</span>
+                    <span class="price-value" id="gamePrice">$0</span>
+                </div>
+                <form id="quoteForm" class="quote-form">
+                    <div class="form-group">
+                        <label><i class="fas fa-user"></i> Nombre completo</label>
+                        <input type="text" id="quoteName" required placeholder="Tu nombre">
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-phone"></i> Teléfono / WhatsApp</label>
+                        <input type="tel" id="quotePhone" required placeholder="300 123 4567">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="fas fa-calendar"></i> Fecha</label>
+                            <input type="date" id="quoteDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-clock"></i> Hora</label>
+                            <input type="time" id="quoteTime" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-hourglass-half"></i> Duración (horas)</label>
+                        <select id="quoteDuration" onchange="calculateTotal()">
+                            <option value="1">1 hora</option>
+                            <option value="2">2 horas</option>
+                            <option value="3">3 horas</option>
+                            <option value="4">4 horas</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-users"></i> Número de personas</label>
+                        <input type="number" id="quotePeople" min="1" max="20" value="2" onchange="calculateTotal()">
+                    </div>
+                    <div class="total-price">
+                        <span>Total estimado:</span>
+                        <strong id="totalAmount">$0</strong>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-submit">
+                        <i class="fab fa-whatsapp"></i> Solicitar por WhatsApp
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT DEL SITIO PÚBLICO -->
+    <script src="../js/script.js"></script>
+</body>
+</html>

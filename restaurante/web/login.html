@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Primitivos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .login-wrapper { width:100%; max-width:440px; }
+        .login-logo { text-align:center; margin-bottom:40px; }
+        .login-logo h1 {
+            font-family: 'Playfair Display', serif;
+            color: #FFD700;
+            font-size: 3rem;
+            letter-spacing: 4px;
+            margin-bottom: 5px;
+        }
+        .login-logo p { color:#a0a0a0; font-size:.9rem; }
+        .login-card {
+            background: rgba(20,20,20,.95);
+            padding: 40px;
+            border-radius: 20px;
+            border: 2px solid rgba(255,215,0,.3);
+            box-shadow: 0 0 80px rgba(255,215,0,.15);
+        }
+        .login-title { text-align:center; margin-bottom:30px; color:#FFD700; font-size:1.3rem; font-weight:600; }
+        .form-group { margin-bottom:25px; position:relative; }
+        .form-group label { display:block; color:#FFD700; margin-bottom:8px; font-weight:600; font-size:.9rem; }
+        .form-group input {
+            width:100%; padding:14px 15px 14px 45px;
+            border: 2px solid rgba(255,215,0,.2);
+            border-radius:10px; background:rgba(0,0,0,.5);
+            color:#fff; font-size:1rem; transition:all .3s;
+        }
+        .form-group input:focus { outline:none; border-color:#FFD700; box-shadow:0 0 25px rgba(255,215,0,.2); }
+        .form-group .input-icon { position:absolute; left:15px; top:42px; color:#FFD700; font-size:1rem; }
+        .btn-login {
+            width:100%; padding:15px;
+            background: linear-gradient(135deg,#FFD700,#FF8C00);
+            border:none; border-radius:10px; color:#000;
+            font-weight:700; font-size:1rem; cursor:pointer;
+            transition:all .3s; display:flex; align-items:center; justify-content:center; gap:10px;
+        }
+        .btn-login:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 10px 30px rgba(255,215,0,.4); }
+        .btn-login:disabled { opacity:.7; cursor:not-allowed; }
+        .error-msg {
+            color:#ff4444; text-align:center; margin-top:15px;
+            display:none; font-size:.9rem; padding:10px;
+            background:rgba(255,68,68,.1); border-radius:8px;
+            border:1px solid rgba(255,68,68,.3);
+        }
+        .back-link { text-align:center; margin-top:25px; }
+        .back-link a { color:#a0a0a0; text-decoration:none; font-size:.85rem; transition:color .3s; }
+        .back-link a:hover { color:#FFD700; }
+    </style>
+</head>
+<body>
+    <div class="login-wrapper">
+        <div class="login-logo">
+            <h1>PRIMITIVOS</h1>
+            <p>Sistema de Administración</p>
+        </div>
+        <div class="login-card">
+            <h2 class="login-title"><i class="fas fa-lock"></i> Acceso Restringido</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label><i class="fas fa-user"></i> Usuario</label>
+                    <i class="fas fa-user input-icon"></i>
+                    <input type="text" id="username" required placeholder="Ingrese su usuario" autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-key"></i> Contraseña</label>
+                    <i class="fas fa-key input-icon"></i>
+                    <input type="password" id="password" required placeholder="Ingrese su contraseña" autocomplete="current-password">
+                </div>
+                <button type="submit" class="btn-login" id="btnSubmit">
+                    <i class="fas fa-sign-in-alt"></i> Ingresar al Sistema
+                </button>
+                <div class="error-msg" id="errorMsg">
+                    <i class="fas fa-exclamation-circle"></i> <span id="errorText">Usuario o contraseña incorrectos</span>
+                </div>
+            </form>
+        </div>
+        <div class="back-link">
+            <a href="/"><i class="fas fa-arrow-left"></i> Volver al sitio web</a>
+        </div>
+    </div>
+
+    <script>
+        // Redirigir si ya hay sesión activa
+        if (localStorage.getItem('primitivos_admin_logged') === 'true') {
+            window.location.href = 'admin.html';
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const username  = document.getElementById('username').value.trim();
+            const password  = document.getElementById('password').value;
+            const btnSubmit = document.getElementById('btnSubmit');
+            const errorMsg  = document.getElementById('errorMsg');
+
+            btnSubmit.disabled = true;
+            btnSubmit.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verificando...';
+            errorMsg.style.display = 'none';
+
+            try {
+                // RUTA ABSOLUTA COMPLETA - CAMBIA "restaurante" si tu carpeta se llama diferente
+                const res = await fetch('http://localhost/restaurante/php/login.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+
+                // Verificar que la respuesta sea JSON válido
+                const contentType = res.headers.get('content-type');
+                if (!contentType || !contentType.includes('application/json')) {
+                    const text = await res.text();
+                    console.error('Respuesta no es JSON:', text.substring(0, 300));
+                    throw new Error('Error de conexión con el servidor. Revisa que Apache esté corriendo.');
+                }
+
+                const data = await res.json();
+
+                if (res.ok && data.success) {
+                    localStorage.setItem('primitivos_admin_logged', 'true');
+                    localStorage.setItem('primitivos_admin_user', data.user.username);
+                    localStorage.setItem('primitivos_admin_rol',  data.user.rol);
+                    window.location.href = 'admin.html';
+                } else {
+                    throw new Error(data.error || 'Credenciales incorrectas');
+                }
+
+            } catch (err) {
+                console.error('Error de login:', err);
+                document.getElementById('errorText').textContent = err.message;
+                errorMsg.style.display = 'block';
+                document.getElementById('password').value = '';
+                document.getElementById('password').focus();
+                btnSubmit.disabled = false;
+                btnSubmit.innerHTML = '<i class="fas fa-sign-in-alt"></i> Ingresar al Sistema';
+            }
+        });
+    </script>
+</body>
+</html>
